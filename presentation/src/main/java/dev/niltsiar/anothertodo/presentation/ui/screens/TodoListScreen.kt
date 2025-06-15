@@ -32,10 +32,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.niltsiar.anothertodo.domain.model.Priority
 import dev.niltsiar.anothertodo.domain.model.TodoItem
 import dev.niltsiar.anothertodo.presentation.viewmodel.TodoViewModel
+
+@Preview(showBackground = true)
+@Composable
+fun TodoListScreenPreview() {
+    TodoListScreenContent(
+        isLoading = false,
+        todos = listOf(
+            TodoItem(
+                id = 1,
+                title = "Sample Todo 1",
+                description = "This is a sample todo item for preview",
+                isCompleted = false,
+                priority = Priority.HIGH
+            ),
+            TodoItem(
+                id = 2,
+                title = "Sample Todo 2",
+                description = "This is another sample todo item",
+                isCompleted = true,
+                priority = Priority.LOW
+            )
+        ),
+        onAddTodo = {},
+        onTodoClick = {}
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +72,27 @@ fun TodoListScreen(
     onAddTodo: () -> Unit,
     onTodoClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: TodoViewModel = hiltViewModel()
+    viewModel: TodoViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    TodoListScreenContent(
+        isLoading = uiState.isLoading,
+        todos = uiState.todos,
+        onAddTodo = onAddTodo,
+        onTodoClick = onTodoClick,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TodoListScreenContent(
+    isLoading: Boolean,
+    todos: List<TodoItem>,
+    onAddTodo: () -> Unit,
+    onTodoClick: (Long) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -95,6 +144,39 @@ fun TodoListScreen(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun TodoItemPreview() {
+    val todo = TodoItem(
+        id = 1,
+        title = "Sample Todo",
+        description = "This is a sample todo item for preview",
+        isCompleted = false,
+        priority = Priority.MEDIUM
+    )
+    TodoItem(
+        todo = todo,
+        onTodoClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TodoItemPreview() {
+    MaterialTheme {
+        TodoItem(
+            todo = TodoItem(
+                id = 1,
+                title = "Sample Todo",
+                description = "This is a sample todo item for preview",
+                isCompleted = false,
+                priority = Priority.MEDIUM
+            ),
+            onTodoClick = {}
+        )
+    }
+}
+
 @Composable
 fun TodoItem(
     todo: TodoItem,
@@ -122,7 +204,7 @@ fun TodoItem(
                 )
                 Spacer(modifier = Modifier.width(16.dp))
             }
-            
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = todo.title,
@@ -131,7 +213,7 @@ fun TodoItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                
+
                 if (todo.description.isNotBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
@@ -140,6 +222,40 @@ fun TodoItem(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         textDecoration = if (todo.isCompleted) TextDecoration.LineThrough else TextDecoration.None
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TodoListScreenPreview() {
+    MaterialTheme {
+        val sampleTodos = listOf(
+            TodoItem(
+                id = 1,
+                title = "Sample Todo 1",
+                description = "This is a sample todo item for preview",
+                isCompleted = false,
+                priority = Priority.HIGH
+            ),
+            TodoItem(
+                id = 2,
+                title = "Sample Todo 2",
+                description = "This is another sample todo item",
+                isCompleted = true,
+                priority = Priority.LOW
+            )
+        )
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn {
+                items(sampleTodos) { todo ->
+                    TodoItem(
+                        todo = todo,
+                        onTodoClick = {}
                     )
                 }
             }

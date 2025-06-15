@@ -4,9 +4,8 @@ import arrow.core.Either
 import dev.niltsiar.anothertodo.domain.model.TodoItem
 import dev.niltsiar.anothertodo.domain.repository.TodoError
 import dev.niltsiar.anothertodo.domain.repository.TodoRepository
-import javax.inject.Inject
 
-class DeleteTodoUseCase @Inject constructor(
+class DeleteTodoUseCase(
     private val todoRepository: TodoRepository,
 ) {
     suspend operator fun invoke(todo: TodoItem): Either<TodoError, Unit> {

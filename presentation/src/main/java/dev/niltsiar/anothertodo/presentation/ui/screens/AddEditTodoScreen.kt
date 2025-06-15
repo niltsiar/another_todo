@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.niltsiar.anothertodo.domain.model.TodoItem
@@ -135,6 +136,49 @@ fun AddEditTodoScreen(
                 Checkbox(
                     checked = isCompleted,
                     onCheckedChange = { isCompleted = it }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Completed")
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AddEditTodoScreenPreview() {
+    MaterialTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            OutlinedTextField(
+                value = "Sample Todo Title",
+                onValueChange = {},
+                label = { Text("Title") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = "This is a sample todo description for preview",
+                onValueChange = {},
+                label = { Text("Description") },
+                modifier = Modifier.fillMaxWidth(),
+                minLines = 3
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {},
+                modifier = Modifier.align(Alignment.Start)
+            ) {
+                Checkbox(
+                    checked = false,
+                    onCheckedChange = {}
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Completed")

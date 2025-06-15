@@ -16,8 +16,8 @@ interface TodoRepository {
     suspend fun deleteAllTodos(): Either<TodoError, Unit>
 }
 
-sealed class TodoError {
-    data object DatabaseError : TodoError()
-    data object TodoNotFound : TodoError()
-    data class UnknownError(val message: String) : TodoError()
+sealed interface TodoError {
+    data object DatabaseError : TodoError
+    data object TodoNotFound : TodoError
+    data class UnknownError(val message: String) : TodoError
 }
