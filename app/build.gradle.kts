@@ -51,10 +51,10 @@ dependencies {
 
     // Material 3
     implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.material3:material3-expressive:1.4.0-alpha15")
+    implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
 
     // Navigation
-    implementation("androidx.navigation3:navigation-compose:1.0.0-alpha01")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.51")
