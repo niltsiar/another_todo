@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 java {
@@ -15,13 +16,15 @@ kotlin {
 dependencies {
     // Kotlin
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
 
     // Arrow
     implementation(libs.arrow.core)
     implementation(libs.arrow.fx.coroutines)
 
     // Hilt
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.javax.inject)
 
     // Testing
     testImplementation(libs.junit)

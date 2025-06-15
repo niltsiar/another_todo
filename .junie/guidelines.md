@@ -24,3 +24,5 @@
 * For compose, use ImmutableList from kotlinx when possible.
 * Using kotest, create tests using property based testing and test
   the business logic of the app.
+* Instead of sealed classes use sealed interfaces when possible for sealed hierarchies.
+* Include compose previews for all composables.
