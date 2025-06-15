@@ -2,11 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.kapt")
+    id("com.google.devtools.ksp") version "2.0.21-1.0.19"
 }
-
-apply(plugin = "com.google.dagger.hilt.android")
-apply(plugin = "kotlin-kapt")
-apply(plugin = "com.google.devtools.ksp")
 
 android {
     namespace = "dev.niltsiar.anothertodo"
