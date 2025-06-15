@@ -11,9 +11,7 @@ import dev.niltsiar.anothertodo.domain.repository.TodoError
 import dev.niltsiar.anothertodo.domain.repository.TodoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-
-class TodoRepositoryImpl @Inject constructor(
+class TodoRepositoryImpl(
     private val todoDao: TodoDao,
 ) : TodoRepository {
 

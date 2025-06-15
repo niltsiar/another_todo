@@ -12,11 +12,11 @@ class DeleteTodoUseCase @Inject constructor(
     suspend operator fun invoke(todo: TodoItem): Either<TodoError, Unit> {
         return todoRepository.deleteTodo(todo)
     }
-    
+
     suspend fun deleteById(id: Long): Either<TodoError, Unit> {
         return todoRepository.deleteTodoById(id)
     }
-    
+
     suspend fun deleteAll(): Either<TodoError, Unit> {
         return todoRepository.deleteAllTodos()
     }
