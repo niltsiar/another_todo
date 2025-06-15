@@ -29,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -47,17 +47,16 @@ dependencies {
 
     // Compose
     implementation("androidx.activity:activity-compose:1.10.1")
-    implementation(platform("androidx.compose:compose-bom:2024.09.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.ui:ui:1.6.1")
+    implementation("androidx.compose.ui:ui-graphics:1.6.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.1")
 
     // Material 3
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-expressive:1.2.0-beta01")
+    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.compose.material3:material3-expressive:1.4.0-alpha15")
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:3.0.0-alpha05")
+    implementation("androidx.navigation3:navigation-compose:1.0.0-alpha01")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.51")
@@ -88,11 +87,10 @@ dependencies {
     // Android Testing
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
 
     // Debug
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.1")
 }
