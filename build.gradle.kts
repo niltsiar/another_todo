@@ -31,9 +31,4 @@ subprojects {
             showFailedStandardStreams = true
         }
     }
-
-    tasks.withType<Test>().configureEach {
-        useJUnitPlatform()
-        outputs.upToDateWhen { false } // Force tests to run every time
-    }
 }
