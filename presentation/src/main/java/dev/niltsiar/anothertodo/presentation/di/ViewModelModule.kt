@@ -11,6 +11,9 @@ import dev.niltsiar.anothertodo.domain.usecase.DeleteTodoUseCase
 import dev.niltsiar.anothertodo.domain.usecase.GetTodoByIdUseCase
 import dev.niltsiar.anothertodo.domain.usecase.GetTodosUseCase
 import dev.niltsiar.anothertodo.domain.usecase.UpdateTodoUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -44,5 +47,11 @@ object ViewModelModule {
     @ViewModelScoped
     fun provideDeleteTodoUseCase(todoRepository: TodoRepository): DeleteTodoUseCase {
         return DeleteTodoUseCase(todoRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideViewModelScope(): CoroutineScope {
+        return CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
     }
 }

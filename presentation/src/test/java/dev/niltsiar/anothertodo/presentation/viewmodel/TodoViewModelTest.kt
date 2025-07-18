@@ -63,7 +63,7 @@ class TodoViewModelTest : StringSpec({
                     addTodoUseCase,
                     updateTodoUseCase,
                     deleteTodoUseCase,
-                    testScope
+                    viewModelScope = testScope
                 )
 
                 // Advance the dispatcher to allow the init block to execute
@@ -99,7 +99,7 @@ class TodoViewModelTest : StringSpec({
                     addTodoUseCase,
                     updateTodoUseCase,
                     deleteTodoUseCase,
-                    testScope
+                    viewModelScope = testScope
                 )
 
                 // When
@@ -134,7 +134,7 @@ class TodoViewModelTest : StringSpec({
                     addTodoUseCase,
                     updateTodoUseCase,
                     deleteTodoUseCase,
-                    testScope
+                    viewModelScope = testScope
                 )
 
                 // When

@@ -14,6 +14,8 @@ import dev.niltsiar.anothertodo.presentation.model.TodoUiState
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,11 +29,8 @@ class TodoViewModel @Inject constructor(
     private val addTodoUseCase: AddTodoUseCase,
     private val updateTodoUseCase: UpdateTodoUseCase,
     private val deleteTodoUseCase: DeleteTodoUseCase,
-    private val coroutineScope: CoroutineScope? = null
-) : ViewModel() {
-
-    private val scope: CoroutineScope
-        get() = coroutineScope ?: viewModelScope
+    viewModelScope: CoroutineScope
+) : ViewModel(viewModelScope) {
 
     private val _uiState = MutableStateFlow(TodoUiState())
     val uiState: StateFlow<TodoUiState> = _uiState.asStateFlow()
@@ -41,7 +40,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun loadTodos() {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getTodosUseCase().collect { todos ->
                 _uiState.update { it.copy(todos = todos.toImmutableList(), isLoading = false) }
@@ -50,7 +49,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun loadActiveTodos() {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getTodosUseCase.getActiveTodos().collect { todos ->
                 _uiState.update { it.copy(todos = todos.toImmutableList(), isLoading = false) }
@@ -59,7 +58,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun loadCompletedTodos() {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getTodosUseCase.getCompletedTodos().collect { todos ->
                 _uiState.update { it.copy(todos = todos.toImmutableList(), isLoading = false) }
@@ -68,7 +67,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun getTodoById(id: Long) {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getTodoByIdUseCase(id).fold(
                 { error -> handleError(error) },
@@ -78,7 +77,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun addTodo(todo: TodoItem) {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             addTodoUseCase(todo).fold(
                 { error -> handleError(error) },
@@ -88,7 +87,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun updateTodo(todo: TodoItem) {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             updateTodoUseCase(todo).fold(
                 { error -> handleError(error) },
@@ -98,7 +97,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun deleteTodo(todo: TodoItem) {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             deleteTodoUseCase(todo).fold(
                 { error -> handleError(error) },
@@ -108,7 +107,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun deleteTodoById(id: Long) {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             deleteTodoUseCase.deleteById(id).fold(
                 { error -> handleError(error) },
@@ -118,7 +117,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun deleteAllTodos() {
-        scope.launch {
+        viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             deleteTodoUseCase.deleteAll().fold(
                 { error -> handleError(error) },
