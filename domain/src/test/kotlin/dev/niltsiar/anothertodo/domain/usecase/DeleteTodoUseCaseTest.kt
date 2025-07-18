@@ -6,109 +6,129 @@ import dev.niltsiar.anothertodo.domain.model.Priority
 import dev.niltsiar.anothertodo.domain.model.TodoItem
 import dev.niltsiar.anothertodo.domain.repository.TodoError
 import dev.niltsiar.anothertodo.domain.repository.TodoRepository
+import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.boolean
+import io.kotest.property.arbitrary.enum
+import io.kotest.property.arbitrary.long
+import io.kotest.property.arbitrary.string
+import io.kotest.property.checkAll
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
 
-class DeleteTodoUseCaseTest {
+class DeleteTodoUseCaseTest : StringSpec({
+    val repository = mockk<TodoRepository>()
+    val useCase = DeleteTodoUseCase(repository)
 
-    private lateinit var repository: TodoRepository
-    private lateinit var useCase: DeleteTodoUseCase
+    "invoke should return Right with Unit when repository returns success" {
+        checkAll(
+            Arb.long(min = 1),
+            Arb.string(minSize = 1, maxSize = 100),
+            Arb.string(minSize = 0, maxSize = 500),
+            Arb.boolean(),
+            Arb.enum<Priority>()
+        ) { id, title, description, isCompleted, priority ->
+            runTest {
+                // Given
+                val todo = TodoItem(
+                    id = id,
+                    title = title,
+                    description = description,
+                    isCompleted = isCompleted,
+                    priority = priority
+                )
+                coEvery { repository.deleteTodo(todo) } returns Unit.right()
 
-    @Before
-    fun setup() {
-        repository = mockk()
-        useCase = DeleteTodoUseCase(repository)
+                // When
+                val result = useCase(todo)
+
+                // Then
+                result shouldBe Unit.right()
+            }
+        }
     }
 
-    @Test
-    fun `invoke should return Right with Unit when repository returns success`() = runTest {
-        // Given
-        val todo = TodoItem(
-            id = 1L,
-            title = "Test Todo",
-            description = "Test Description",
-            isCompleted = false,
-            priority = Priority.MEDIUM
-        )
-        coEvery { repository.deleteTodo(todo) } returns Unit.right()
+    "invoke should return Left with error when repository returns error" {
+        checkAll(
+            Arb.long(min = 1),
+            Arb.string(minSize = 1, maxSize = 100),
+            Arb.string(minSize = 0, maxSize = 500)
+        ) { id, title, description ->
+            runTest {
+                // Given
+                val todo = TodoItem(
+                    id = id,
+                    title = title,
+                    description = description,
+                    isCompleted = false,
+                    priority = Priority.MEDIUM
+                )
+                coEvery { repository.deleteTodo(todo) } returns TodoError.TodoNotFound.left()
 
-        // When
-        val result = useCase(todo)
+                // When
+                val result = useCase(todo)
 
-        // Then
-        result shouldBe Unit.right()
+                // Then
+                result shouldBe TodoError.TodoNotFound.left()
+            }
+        }
     }
 
-    @Test
-    fun `invoke should return Left with error when repository returns error`() = runTest {
-        // Given
-        val todo = TodoItem(
-            id = 1L,
-            title = "Test Todo",
-            description = "Test Description",
-            isCompleted = false,
-            priority = Priority.MEDIUM
-        )
-        coEvery { repository.deleteTodo(todo) } returns TodoError.TodoNotFound.left()
+    "deleteById should return Right with Unit when repository returns success" {
+        checkAll(Arb.long(min = 1)) { todoId ->
+            runTest {
+                // Given
+                coEvery { repository.deleteTodoById(todoId) } returns Unit.right()
 
-        // When
-        val result = useCase(todo)
+                // When
+                val result = useCase.deleteById(todoId)
 
-        // Then
-        result shouldBe TodoError.TodoNotFound.left()
+                // Then
+                result shouldBe Unit.right()
+            }
+        }
     }
 
-    @Test
-    fun `deleteById should return Right with Unit when repository returns success`() = runTest {
-        // Given
-        val todoId = 1L
-        coEvery { repository.deleteTodoById(todoId) } returns Unit.right()
+    "deleteById should return Left with error when repository returns error" {
+        checkAll(Arb.long(min = 1)) { todoId ->
+            runTest {
+                // Given
+                coEvery { repository.deleteTodoById(todoId) } returns TodoError.TodoNotFound.left()
 
-        // When
-        val result = useCase.deleteById(todoId)
+                // When
+                val result = useCase.deleteById(todoId)
 
-        // Then
-        result shouldBe Unit.right()
+                // Then
+                result shouldBe TodoError.TodoNotFound.left()
+            }
+        }
     }
 
-    @Test
-    fun `deleteById should return Left with error when repository returns error`() = runTest {
-        // Given
-        val todoId = 1L
-        coEvery { repository.deleteTodoById(todoId) } returns TodoError.TodoNotFound.left()
+    "deleteAll should return Right with Unit when repository returns success" {
+        runTest {
+            // Given
+            coEvery { repository.deleteAllTodos() } returns Unit.right()
 
-        // When
-        val result = useCase.deleteById(todoId)
+            // When
+            val result = useCase.deleteAll()
 
-        // Then
-        result shouldBe TodoError.TodoNotFound.left()
+            // Then
+            result shouldBe Unit.right()
+        }
     }
 
-    @Test
-    fun `deleteAll should return Right with Unit when repository returns success`() = runTest {
-        // Given
-        coEvery { repository.deleteAllTodos() } returns Unit.right()
+    "deleteAll should return Left with error when repository returns error" {
+        runTest {
+            // Given
+            coEvery { repository.deleteAllTodos() } returns TodoError.DatabaseError.left()
 
-        // When
-        val result = useCase.deleteAll()
+            // When
+            val result = useCase.deleteAll()
 
-        // Then
-        result shouldBe Unit.right()
+            // Then
+            result shouldBe TodoError.DatabaseError.left()
+        }
     }
-
-    @Test
-    fun `deleteAll should return Left with error when repository returns error`() = runTest {
-        // Given
-        coEvery { repository.deleteAllTodos() } returns TodoError.DatabaseError.left()
-
-        // When
-        val result = useCase.deleteAll()
-
-        // Then
-        result shouldBe TodoError.DatabaseError.left()
-    }
-}
+})
