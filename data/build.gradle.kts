@@ -1,60 +1,20 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.test.logger)
+    id("anothertodo.android.library")
+    id("anothertodo.android.hilt")
+    id("anothertodo.android.room")
+    id("anothertodo.kotlin.serialization")
 }
 
 android {
     namespace = "dev.niltsiar.anothertodo.data"
     compileSdk = 36
-
-    defaultConfig {
-        minSdk = 35
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-            isReturnDefaultValues = true
-        }
-    }
 }
-
-// Test configuration moved to root build.gradle.kts
 
 dependencies {
     // Domain module
     implementation(project(":domain"))
 
-    // AndroidX
-    implementation(libs.androidx.core.ktx)
-
-    // Room
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-
     // Kotlin
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
 
     // Arrow
@@ -62,13 +22,10 @@ dependencies {
     implementation(libs.arrow.fx.coroutines)
 
     // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.mockk)
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.kotest.property)
-
-    // No Android Testing needed
+    testImplementation(libs.kotlinx.coroutines.test)
 }
