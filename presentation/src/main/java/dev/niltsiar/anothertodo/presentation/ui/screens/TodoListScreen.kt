@@ -37,19 +37,28 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreen(
     onAddTodo: () -> Unit,
     onTodoClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TodoViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState? = null,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val localSnackbarHostState = remember { SnackbarHostState() }
+    val effectiveSnackbarHostState = snackbarHostState ?: localSnackbarHostState
 
     // Load todos when the screen is first composed
     LaunchedEffect(Unit) {
         viewModel.loadTodos()
+    }
+
+    // Show error in snackbar if present
+    LaunchedEffect(uiState.error) {
+        if (uiState.error != null) {
+            effectiveSnackbarHostState.showSnackbar(message = uiState.error!!)
+        }
     }
 
     TodoListScreenContent(
@@ -57,12 +66,10 @@ fun TodoListScreen(
         todos = uiState.todos.toImmutableList(),
         onAddTodo = onAddTodo,
         onTodoClick = onTodoClick,
-        modifier = modifier,
-        error = uiState.error
+        modifier = modifier
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreenContent(
     isLoading: Boolean,
@@ -70,61 +77,30 @@ fun TodoListScreenContent(
     onAddTodo: () -> Unit,
     onTodoClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    error: String? = null,
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    // Show error in snackbar if present
-    LaunchedEffect(error) {
-        if (error != null) {
-            snackbarHostState.showSnackbar(message = error)
+    if (isLoading) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
         }
-    }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Todo List") }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = onAddTodo) {
-                Icon(Icons.Default.Add, contentDescription = "Add Todo")
-            }
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = modifier
-    ) { innerPadding ->
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else if (todos.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("No todos yet. Add one by clicking the + button.")
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                items(todos) { todo ->
-                    TodoItem(
-                        todo = todo,
-                        onTodoClick = { onTodoClick(todo.id) }
-                    )
-                }
+    } else if (todos.isEmpty()) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("No todos yet. Add one by clicking the + button.")
+        }
+    } else {
+        LazyColumn(
+            modifier = modifier.fillMaxSize()
+        ) {
+            items(todos) { todo ->
+                TodoItem(
+                    todo = todo,
+                    onTodoClick = { onTodoClick(todo.id) }
+                )
             }
         }
     }
