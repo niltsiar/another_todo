@@ -35,9 +35,7 @@ class TodoViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(TodoUiState())
     val uiState: StateFlow<TodoUiState> = _uiState.asStateFlow()
 
-    init {
-        loadTodos()
-    }
+    // No init block, loadTodos() will be called from UI
 
     fun loadTodos() {
         viewModelScope.launch {
