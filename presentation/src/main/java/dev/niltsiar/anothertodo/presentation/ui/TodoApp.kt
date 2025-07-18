@@ -28,29 +28,27 @@ fun TodoApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = TodoDestinations.TODO_LIST,
+            startDestination = TodoDestinations.TodoList.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(TodoDestinations.TODO_LIST) {
+            composable(TodoDestinations.TodoList.route) {
                 TodoListScreen(
-                    onAddTodo = { navController.navigate(TodoDestinations.ADD_EDIT_TODO) },
+                    onAddTodo = { 
+                        navController.navigate(TodoDestinations.AddEditTodo().route) 
+                    },
                     onTodoClick = { todoId ->
-                        navController.navigate("${TodoDestinations.ADD_EDIT_TODO}/$todoId")
+                        navController.navigate(TodoDestinations.AddEditTodo(todoId).route)
                     }
                 )
             }
             composable(
-                route = "${TodoDestinations.ADD_EDIT_TODO}/{todoId}",
-                arguments = TodoDestinations.arguments
+                route = TodoDestinations.AddEditTodo.route,
+                arguments = TodoDestinations.AddEditTodo.arguments
             ) { backStackEntry ->
-                val todoId = backStackEntry.arguments?.getString("todoId")?.toLongOrNull()
+                val todoIdString = backStackEntry.arguments?.getString("todoId")
+                val todoId = if (todoIdString == "new") null else todoIdString?.toLongOrNull()
                 AddEditTodoScreen(
                     todoId = todoId,
-                    onNavigateBack = { navController.popBackStack() }
-                )
-            }
-            composable(TodoDestinations.ADD_EDIT_TODO) {
-                AddEditTodoScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }
