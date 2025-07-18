@@ -5,6 +5,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import utils.libs
 
@@ -29,7 +30,9 @@ class KotlinLibraryConventionPlugin : Plugin<Project> {
 
             // Configure Kotlin
             extensions.configure<KotlinJvmProjectExtension> {
-                jvmToolchain(17)
+                compilerOptions {
+                    jvmTarget.set(JvmTarget.JVM_17)
+                }
             }
 
             // Add common dependencies

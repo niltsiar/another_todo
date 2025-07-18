@@ -4,6 +4,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import utils.libs
 
 /**
@@ -40,6 +43,13 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                         isIncludeAndroidResources = true
                         isReturnDefaultValues = true
                     }
+                }
+            }
+
+            // Configure Kotlin
+            extensions.configure<KotlinAndroidProjectExtension> {
+                compilerOptions {
+                    jvmTarget.set(JvmTarget.JVM_17)
                 }
             }
 
