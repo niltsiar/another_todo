@@ -13,11 +13,15 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,14 +45,20 @@ fun TodoListScreen(
     modifier: Modifier = Modifier,
     viewModel: TodoViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    // Load todos when the screen is first composed
+    LaunchedEffect(Unit) {
+        viewModel.loadTodos()
+    }
 
     TodoListScreenContent(
         isLoading = uiState.isLoading,
         todos = uiState.todos.toImmutableList(),
         onAddTodo = onAddTodo,
         onTodoClick = onTodoClick,
-        modifier = modifier
+        modifier = modifier,
+        error = uiState.error
     )
 }
 
@@ -60,7 +70,17 @@ fun TodoListScreenContent(
     onAddTodo: () -> Unit,
     onTodoClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
+    error: String? = null,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Show error in snackbar if present
+    LaunchedEffect(error) {
+        if (error != null) {
+            snackbarHostState.showSnackbar(message = error)
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -72,6 +92,7 @@ fun TodoListScreenContent(
                 Icon(Icons.Default.Add, contentDescription = "Add Todo")
             }
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier
     ) { innerPadding ->
         if (isLoading) {

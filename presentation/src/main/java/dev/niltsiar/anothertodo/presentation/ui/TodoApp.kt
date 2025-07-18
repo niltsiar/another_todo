@@ -20,17 +20,11 @@ fun TodoApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+    NavHost(
+        navController = navController,
+        startDestination = TodoDestinations.TodoList.route,
         modifier = modifier
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = TodoDestinations.TodoList.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
+    ) {
             composable(TodoDestinations.TodoList.route) {
                 TodoListScreen(
                     onAddTodo = { 
@@ -53,5 +47,4 @@ fun TodoApp(
                 )
             }
         }
-    }
 }
