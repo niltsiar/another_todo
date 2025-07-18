@@ -21,25 +21,16 @@ import io.kotest.property.checkAll
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TodoViewModelTest : StringSpec({
     val testDispatcher = StandardTestDispatcher()
-
-    beforeTest {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    afterTest {
-        Dispatchers.resetMain()
-    }
+    val testScope = CoroutineScope(testDispatcher)
 
     "loadTodos should update state with todos" {
         checkAll(Arb.int(min = 0, max = 5)) { count ->
@@ -71,7 +62,8 @@ class TodoViewModelTest : StringSpec({
                     getTodoByIdUseCase,
                     addTodoUseCase,
                     updateTodoUseCase,
-                    deleteTodoUseCase
+                    deleteTodoUseCase,
+                    testScope
                 )
 
                 // Advance the dispatcher to allow the init block to execute
@@ -106,7 +98,8 @@ class TodoViewModelTest : StringSpec({
                     getTodoByIdUseCase,
                     addTodoUseCase,
                     updateTodoUseCase,
-                    deleteTodoUseCase
+                    deleteTodoUseCase,
+                    testScope
                 )
 
                 // When
@@ -140,7 +133,8 @@ class TodoViewModelTest : StringSpec({
                     getTodoByIdUseCase,
                     addTodoUseCase,
                     updateTodoUseCase,
-                    deleteTodoUseCase
+                    deleteTodoUseCase,
+                    testScope
                 )
 
                 // When
