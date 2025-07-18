@@ -47,28 +47,7 @@ android {
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-    outputs.upToDateWhen { false } // Force tests to run every time
-}
-
-testlogger {
-    theme = com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA
-    showExceptions = true
-    showStackTraces = true
-    showFullStackTraces = true
-    showCauses = true
-    slowThreshold = 2000
-    showSummary = true
-    showSimpleNames = false
-    showPassed = true
-    showSkipped = true
-    showFailed = true
-    showStandardStreams = true
-    showPassedStandardStreams = true
-    showSkippedStandardStreams = true
-    showFailedStandardStreams = true
-}
+// Test configuration moved to root build.gradle.kts
 
 dependencies {
     // Modules

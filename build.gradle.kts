@@ -8,4 +8,32 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.test.logger) apply false
+}
+
+subprojects {
+    plugins.withId("com.adarshr.test-logger") {
+        configure<com.adarshr.gradle.testlogger.TestLoggerExtension> {
+            theme = com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA
+            showExceptions = true
+            showStackTraces = true
+            showFullStackTraces = true
+            showCauses = true
+            slowThreshold = 2000
+            showSummary = true
+            showSimpleNames = false
+            showPassed = true
+            showSkipped = true
+            showFailed = true
+            showStandardStreams = true
+            showPassedStandardStreams = true
+            showSkippedStandardStreams = true
+            showFailedStandardStreams = true
+        }
+    }
+
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+        outputs.upToDateWhen { false } // Force tests to run every time
+    }
 }
