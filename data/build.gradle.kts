@@ -60,8 +60,5 @@ dependencies {
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.kotest.property)
 
-    // Android Testing
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.room.testing)
+    // No Android Testing needed
 }

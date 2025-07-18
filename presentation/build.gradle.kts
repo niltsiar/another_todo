@@ -76,10 +76,7 @@ dependencies {
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.kotest.property)
 
-    // Android Testing
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    // No Android Testing needed
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)
