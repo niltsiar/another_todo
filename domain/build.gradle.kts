@@ -13,6 +13,10 @@ kotlin {
     jvmToolchain(17)
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 dependencies {
     // Kotlin
     implementation(libs.kotlinx.coroutines.core)
@@ -33,4 +37,5 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.assertions)
+    testImplementation(libs.kotest.property)
 }
