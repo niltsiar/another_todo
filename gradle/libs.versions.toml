@@ -24,6 +24,7 @@ kotlinx-serialization = "1.9.0"
 kotlinx-datetime = "0.7.1"
 kotlinx-collections-immutable = "0.3.7"
 javax-inject = "1"
+test-logger = "4.0.0"
 
 [libraries]
 # AndroidX
@@ -94,3 +95,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+test-logger = { id = "com.adarshr.test-logger", version.ref = "test-logger" }
