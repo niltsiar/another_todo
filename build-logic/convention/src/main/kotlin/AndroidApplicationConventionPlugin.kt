@@ -18,22 +18,22 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             // Apply the Kotlin Android plugin
             pluginManager.apply("org.jetbrains.kotlin.android")
             // Apply the JVM test convention plugin
-            pluginManager.apply("anothertodo.jvm.test")
-            
+            pluginManager.apply("dev.niltsiar.anothertodo.jvm.test")
+
             // Configure Android
             extensions.configure<ApplicationExtension> {
                 defaultConfig {
                     minSdk = 35
                     targetSdk = 36
-                    
+
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
-                
+
                 compileOptions {
                     sourceCompatibility = JavaVersion.VERSION_17
                     targetCompatibility = JavaVersion.VERSION_17
                 }
-                
+
                 buildTypes {
                     release {
                         isMinifyEnabled = false
@@ -43,7 +43,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                         )
                     }
                 }
-                
+
                 testOptions {
                     unitTests {
                         isIncludeAndroidResources = true
@@ -51,7 +51,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     }
                 }
             }
-            
+
             // Add common dependencies
             dependencies {
                 add("implementation", libs.findLibrary("androidx.core.ktx").get())

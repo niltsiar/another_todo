@@ -19,7 +19,7 @@ class KotlinLibraryConventionPlugin : Plugin<Project> {
             pluginManager.apply("org.jetbrains.kotlin.jvm")
 
             // Apply the JVM test convention plugin
-            pluginManager.apply("anothertodo.jvm.test")
+            pluginManager.apply("dev.niltsiar.anothertodo.jvm.test")
 
             // Configure Java
             extensions.configure<JavaPluginExtension> {

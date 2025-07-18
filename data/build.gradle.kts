@@ -1,15 +1,14 @@
 plugins {
-    id("anothertodo.android.library")
-    id("anothertodo.android.hilt")
-    id("anothertodo.android.room")
-    id("anothertodo.kotlin.serialization")
-    id("anothertodo.arrow")
-    id("anothertodo.kotlinx.datetime")
+    id("dev.niltsiar.anothertodo.android.library")
+    id("dev.niltsiar.anothertodo.android.hilt")
+    id("dev.niltsiar.anothertodo.android.room")
+    id("dev.niltsiar.anothertodo.kotlin.serialization")
+    id("dev.niltsiar.anothertodo.arrow")
+    id("dev.niltsiar.anothertodo.kotlinx.datetime")
 }
 
 android {
     namespace = "dev.niltsiar.anothertodo.data"
-    compileSdk = 36
 }
 
 dependencies {

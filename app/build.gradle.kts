@@ -1,17 +1,16 @@
 plugins {
-    id("anothertodo.android.application")
-    id("anothertodo.android.compose")
-    id("anothertodo.android.hilt")
-    id("anothertodo.kotlin.serialization")
-    id("anothertodo.arrow")
-    id("anothertodo.navigation")
-    id("anothertodo.kotlinx.datetime")
-    id("anothertodo.android.room")
+    id("dev.niltsiar.anothertodo.android.application")
+    id("dev.niltsiar.anothertodo.android.compose")
+    id("dev.niltsiar.anothertodo.android.hilt")
+    id("dev.niltsiar.anothertodo.kotlin.serialization")
+    id("dev.niltsiar.anothertodo.arrow")
+    id("dev.niltsiar.anothertodo.navigation")
+    id("dev.niltsiar.anothertodo.kotlinx.datetime")
+    id("dev.niltsiar.anothertodo.android.room")
 }
 
 android {
     namespace = "dev.niltsiar.anothertodo"
-    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.niltsiar.anothertodo"
@@ -25,7 +24,4 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":presentation"))
-
-    // Testing
-    testImplementation(libs.junit)
 }

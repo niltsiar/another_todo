@@ -1,11 +1,6 @@
 plugins {
-    id("anothertodo.kotlin.library")
-    id("anothertodo.kotlin.serialization")
-    id("anothertodo.arrow")
-    id("anothertodo.kotlinx.datetime")
-}
-
-dependencies {
-    // Hilt
-    implementation(libs.javax.inject)
+    id("dev.niltsiar.anothertodo.kotlin.library")
+    id("dev.niltsiar.anothertodo.kotlin.serialization")
+    id("dev.niltsiar.anothertodo.arrow")
+    id("dev.niltsiar.anothertodo.kotlinx.datetime")
 }

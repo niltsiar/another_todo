@@ -27,47 +27,47 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "anothertodo.android.application"
+            id = "dev.niltsiar.anothertodo.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
-            id = "anothertodo.android.library"
+            id = "dev.niltsiar.anothertodo.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidCompose") {
-            id = "anothertodo.android.compose"
+            id = "dev.niltsiar.anothertodo.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
         register("kotlinLibrary") {
-            id = "anothertodo.kotlin.library"
+            id = "dev.niltsiar.anothertodo.kotlin.library"
             implementationClass = "KotlinLibraryConventionPlugin"
         }
         register("kotlinSerialization") {
-            id = "anothertodo.kotlin.serialization"
+            id = "dev.niltsiar.anothertodo.kotlin.serialization"
             implementationClass = "KotlinSerializationConventionPlugin"
         }
         register("androidHilt") {
-            id = "anothertodo.android.hilt"
+            id = "dev.niltsiar.anothertodo.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
         register("androidRoom") {
-            id = "anothertodo.android.room"
+            id = "dev.niltsiar.anothertodo.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
         register("jvmTest") {
-            id = "anothertodo.jvm.test"
+            id = "dev.niltsiar.anothertodo.jvm.test"
             implementationClass = "JvmTestConventionPlugin"
         }
         register("arrow") {
-            id = "anothertodo.arrow"
+            id = "dev.niltsiar.anothertodo.arrow"
             implementationClass = "ArrowConventionPlugin"
         }
         register("navigation") {
-            id = "anothertodo.navigation"
+            id = "dev.niltsiar.anothertodo.navigation"
             implementationClass = "NavigationConventionPlugin"
         }
         register("kotlinxDateTime") {
-            id = "anothertodo.kotlinx.datetime"
+            id = "dev.niltsiar.anothertodo.kotlinx.datetime"
             implementationClass = "KotlinxDateTimeConventionPlugin"
         }
     }
