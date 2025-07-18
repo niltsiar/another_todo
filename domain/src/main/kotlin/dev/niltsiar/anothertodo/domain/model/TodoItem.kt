@@ -1,10 +1,12 @@
 package dev.niltsiar.anothertodo.domain.model
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
+@OptIn(ExperimentalTime::class)
 data class TodoItem(
     val id: Long = 0,
     val title: String,

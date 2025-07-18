@@ -2,11 +2,13 @@ package dev.niltsiar.anothertodo.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
+@OptIn(ExperimentalTime::class)
 @Entity(tableName = "todo_items")
 data class TodoItem(
     @PrimaryKey(autoGenerate = true)
