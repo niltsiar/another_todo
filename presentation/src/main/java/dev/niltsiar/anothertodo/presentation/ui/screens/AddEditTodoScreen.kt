@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.niltsiar.anothertodo.domain.model.TodoItem
+import dev.niltsiar.anothertodo.presentation.ui.theme.AnotherTodoTheme
 import dev.niltsiar.anothertodo.presentation.viewmodel.TodoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -147,7 +148,7 @@ fun AddEditTodoScreen(
 @Preview(showBackground = true)
 @Composable
 fun AddEditTodoFormPreview() {
-    MaterialTheme {
+    AnotherTodoTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -191,7 +192,7 @@ fun AddEditTodoFormPreview() {
 @Preview(showBackground = true)
 @Composable
 fun AddEditTodoScreenPreview() {
-    MaterialTheme {
+    AnotherTodoTheme {
         Scaffold(
             topBar = {
                 TopAppBar(

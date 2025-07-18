@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dev.niltsiar.anothertodo.domain.model.Priority
 import dev.niltsiar.anothertodo.domain.model.TodoItem
 import dev.niltsiar.anothertodo.presentation.ui.components.TodoItem
+import dev.niltsiar.anothertodo.presentation.ui.theme.AnotherTodoTheme
 import dev.niltsiar.anothertodo.presentation.viewmodel.TodoViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -112,25 +113,27 @@ fun TodoListScreenContent(
 @Preview(showBackground = true)
 @Composable
 fun TodoListScreenPreview() {
-    TodoListScreenContent(
-        isLoading = false,
-        todos = persistentListOf(
-            TodoItem(
-                id = 1,
-                title = "Sample Todo 1",
-                description = "This is a sample todo item for preview",
-                isCompleted = false,
-                priority = Priority.HIGH
+    AnotherTodoTheme {
+        TodoListScreenContent(
+            isLoading = false,
+            todos = persistentListOf(
+                TodoItem(
+                    id = 1,
+                    title = "Sample Todo 1",
+                    description = "This is a sample todo item for preview",
+                    isCompleted = false,
+                    priority = Priority.HIGH
+                ),
+                TodoItem(
+                    id = 2,
+                    title = "Sample Todo 2",
+                    description = "This is another sample todo item",
+                    isCompleted = true,
+                    priority = Priority.LOW
+                )
             ),
-            TodoItem(
-                id = 2,
-                title = "Sample Todo 2",
-                description = "This is another sample todo item",
-                isCompleted = true,
-                priority = Priority.LOW
-            )
-        ),
-        onAddTodo = {},
-        onTodoClick = {}
-    )
+            onAddTodo = {},
+            onTodoClick = {}
+        )
+    }
 }

@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.niltsiar.anothertodo.domain.model.Priority
 import dev.niltsiar.anothertodo.domain.model.TodoItem
+import dev.niltsiar.anothertodo.presentation.ui.theme.AnotherTodoTheme
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -85,23 +86,25 @@ fun TodoItem(
 @Preview(showBackground = true)
 @Composable
 fun TodoItemPreview() {
-    val todo = TodoItem(
-        id = 1,
-        title = "Sample Todo",
-        description = "This is a sample todo item for preview",
-        isCompleted = false,
-        priority = Priority.MEDIUM
-    )
-    TodoItem(
-        todo = todo,
-        onTodoClick = {}
-    )
+    AnotherTodoTheme {
+        val todo = TodoItem(
+            id = 1,
+            title = "Sample Todo",
+            description = "This is a sample todo item for preview",
+            isCompleted = false,
+            priority = Priority.MEDIUM
+        )
+        TodoItem(
+            todo = todo,
+            onTodoClick = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun TodoItemWithThemePreview() {
-    MaterialTheme {
+    AnotherTodoTheme {
         TodoItem(
             todo = TodoItem(
                 id = 1,
@@ -118,7 +121,7 @@ fun TodoItemWithThemePreview() {
 @Preview(showBackground = true)
 @Composable
 fun TodoListItemsPreview() {
-    MaterialTheme {
+    AnotherTodoTheme {
         val sampleTodos = persistentListOf(
             TodoItem(
                 id = 1,
