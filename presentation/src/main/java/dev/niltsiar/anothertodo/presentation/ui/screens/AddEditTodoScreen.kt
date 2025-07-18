@@ -19,15 +19,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,15 +39,19 @@ import dev.niltsiar.anothertodo.domain.model.TodoItem
 import dev.niltsiar.anothertodo.presentation.ui.theme.AnotherTodoTheme
 import dev.niltsiar.anothertodo.presentation.viewmodel.TodoViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditTodoScreen(
     onNavigateBack: () -> Unit,
     todoId: Long? = null,
     modifier: Modifier = Modifier,
-    viewModel: TodoViewModel = hiltViewModel()
+    viewModel: TodoViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState? = null,
+    onSave: ((TodoItem) -> Unit)? = null,
+    saveTrigger: Boolean = false
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val localSnackbarHostState = remember { SnackbarHostState() }
+    val effectiveSnackbarHostState = snackbarHostState ?: localSnackbarHostState
 
     // Local state for the form
     var title by remember { mutableStateOf("") }
@@ -68,79 +74,75 @@ fun AddEditTodoScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(if (todoId == null) "Add Todo" else "Edit Todo") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
+    // Show error in snackbar if present
+    LaunchedEffect(uiState.error) {
+        if (uiState.error != null) {
+            effectiveSnackbarHostState.showSnackbar(message = uiState.error!!)
+        }
+    }
+
+    // Function to handle save action
+    val handleSave = {
+        if (title.isNotBlank()) {
+            val todo = TodoItem(
+                id = todoId ?: 0,
+                title = title,
+                description = description,
+                isCompleted = isCompleted
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    if (title.isNotBlank()) {
-                        val todo = TodoItem(
-                            id = todoId ?: 0,
-                            title = title,
-                            description = description,
-                            isCompleted = isCompleted
-                        )
 
-                        if (todoId == null) {
-                            viewModel.addTodo(todo)
-                        } else {
-                            viewModel.updateTodo(todo)
-                        }
-
-                        onNavigateBack()
-                    }
-                }
-            ) {
-                Icon(Icons.Default.Check, contentDescription = "Save")
+            if (todoId == null) {
+                viewModel.addTodo(todo)
+            } else {
+                viewModel.updateTodo(todo)
             }
-        },
+
+            onSave?.invoke(todo)
+            onNavigateBack()
+        }
+    }
+
+    // Observe saveTrigger and perform save action when it changes
+    LaunchedEffect(saveTrigger) {
+        if (saveTrigger) {
+            handleSave()
+        }
+    }
+
+    Column(
         modifier = modifier
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp)
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        OutlinedTextField(
+            value = title,
+            onValueChange = { title = it },
+            label = { Text("Title") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = description,
+            onValueChange = { description = it },
+            label = { Text("Description") },
+            modifier = Modifier.fillMaxWidth(),
+            minLines = 3
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { isCompleted = !isCompleted },
+            modifier = Modifier.align(Alignment.Start)
         ) {
-            OutlinedTextField(
-                value = title,
-                onValueChange = { title = it },
-                label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth()
+            Checkbox(
+                checked = isCompleted,
+                onCheckedChange = { isCompleted = it }
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text("Description") },
-                modifier = Modifier.fillMaxWidth(),
-                minLines = 3
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { isCompleted = !isCompleted },
-                modifier = Modifier.align(Alignment.Start)
-            ) {
-                Checkbox(
-                    checked = isCompleted,
-                    onCheckedChange = { isCompleted = it }
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Completed")
-            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Completed")
         }
     }
 }
