@@ -58,5 +58,17 @@ gradlePlugin {
             id = "anothertodo.jvm.test"
             implementationClass = "JvmTestConventionPlugin"
         }
+        register("arrow") {
+            id = "anothertodo.arrow"
+            implementationClass = "ArrowConventionPlugin"
+        }
+        register("navigation") {
+            id = "anothertodo.navigation"
+            implementationClass = "NavigationConventionPlugin"
+        }
+        register("kotlinxDateTime") {
+            id = "anothertodo.kotlinx.datetime"
+            implementationClass = "KotlinxDateTimeConventionPlugin"
+        }
     }
 }

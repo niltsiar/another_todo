@@ -3,6 +3,10 @@ plugins {
     id("anothertodo.android.compose")
     id("anothertodo.android.hilt")
     id("anothertodo.kotlin.serialization")
+    id("anothertodo.arrow")
+    id("anothertodo.navigation")
+    id("anothertodo.kotlinx.datetime")
+    id("anothertodo.android.room")
 }
 
 android {
@@ -22,27 +26,6 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":presentation"))
 
-    // Navigation
-    implementation(libs.androidx.navigation)
-
-    // Room
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
-
-    // Arrow
-    implementation(libs.arrow.core)
-    implementation(libs.arrow.fx.coroutines)
-
-    // Kotlin
-    implementation(libs.kotlinx.datetime)
-
     // Testing
     testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotest.runner)
-    testImplementation(libs.kotest.assertions)
-    testImplementation(libs.kotest.property)
 }

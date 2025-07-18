@@ -3,6 +3,9 @@ plugins {
     id("anothertodo.android.compose")
     id("anothertodo.android.hilt")
     id("anothertodo.kotlin.serialization")
+    id("anothertodo.arrow")
+    id("anothertodo.navigation")
+    id("anothertodo.kotlinx.datetime")
 }
 
 android {
@@ -16,22 +19,4 @@ dependencies {
 
     // AndroidX
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
-    // Navigation
-    implementation(libs.androidx.navigation)
-
-    // Kotlin
-    implementation(libs.kotlinx.datetime)
-
-    // Arrow
-    implementation(libs.arrow.core)
-    implementation(libs.arrow.fx.coroutines)
-
-    // Testing
-    testImplementation(libs.turbine)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotest.runner)
-    testImplementation(libs.kotest.assertions)
-    testImplementation(libs.kotest.property)
-    testImplementation(libs.kotlinx.coroutines.test)
 }
