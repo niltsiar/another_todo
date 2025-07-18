@@ -146,7 +146,7 @@ fun AddEditTodoScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun AddEditTodoScreenPreview() {
+fun AddEditTodoFormPreview() {
     MaterialTheme {
         Column(
             modifier = Modifier
@@ -182,6 +182,69 @@ fun AddEditTodoScreenPreview() {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Completed")
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun AddEditTodoScreenPreview() {
+    MaterialTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Add Todo") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        }
+                    }
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = {}) {
+                    Icon(Icons.Default.Check, contentDescription = "Save")
+                }
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(16.dp)
+            ) {
+                OutlinedTextField(
+                    value = "Sample Todo Title",
+                    onValueChange = {},
+                    label = { Text("Title") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedTextField(
+                    value = "This is a sample todo description for preview",
+                    onValueChange = {},
+                    label = { Text("Description") },
+                    modifier = Modifier.fillMaxWidth(),
+                    minLines = 3
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {},
+                    modifier = Modifier.align(Alignment.Start)
+                ) {
+                    Checkbox(
+                        checked = false,
+                        onCheckedChange = {}
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Completed")
+                }
             }
         }
     }
