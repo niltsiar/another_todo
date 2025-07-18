@@ -1,6 +1,6 @@
 plugins {
-    id("dev.niltsiar.anothertodo.kotlin.library")
-    id("dev.niltsiar.anothertodo.kotlin.serialization")
-    id("dev.niltsiar.anothertodo.arrow")
-    id("dev.niltsiar.anothertodo.kotlinx.datetime")
+    alias(libs.plugins.convention.kotlin.library)
+    alias(libs.plugins.convention.kotlin.serialization)
+    alias(libs.plugins.convention.arrow)
+    alias(libs.plugins.convention.kotlinx.datetime)
 }

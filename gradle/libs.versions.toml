@@ -103,3 +103,16 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 test-logger = { id = "com.adarshr.test-logger", version.ref = "test-logger" }
+
+# Convention plugins
+convention-android-application = { id = "dev.niltsiar.anothertodo.android.application" }
+convention-android-library = { id = "dev.niltsiar.anothertodo.android.library" }
+convention-android-compose = { id = "dev.niltsiar.anothertodo.android.compose" }
+convention-kotlin-library = { id = "dev.niltsiar.anothertodo.kotlin.library" }
+convention-kotlin-serialization = { id = "dev.niltsiar.anothertodo.kotlin.serialization" }
+convention-android-hilt = { id = "dev.niltsiar.anothertodo.android.hilt" }
+convention-android-room = { id = "dev.niltsiar.anothertodo.android.room" }
+convention-jvm-test = { id = "dev.niltsiar.anothertodo.jvm.test" }
+convention-arrow = { id = "dev.niltsiar.anothertodo.arrow" }
+convention-navigation = { id = "dev.niltsiar.anothertodo.navigation" }
+convention-kotlinx-datetime = { id = "dev.niltsiar.anothertodo.kotlinx.datetime" }

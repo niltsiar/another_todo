@@ -27,47 +27,47 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "dev.niltsiar.anothertodo.android.application"
+            id = libs.plugins.convention.android.application.get().pluginId
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
-            id = "dev.niltsiar.anothertodo.android.library"
+            id = libs.plugins.convention.android.library.get().pluginId
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidCompose") {
-            id = "dev.niltsiar.anothertodo.android.compose"
+            id = libs.plugins.convention.android.compose.get().pluginId
             implementationClass = "AndroidComposeConventionPlugin"
         }
         register("kotlinLibrary") {
-            id = "dev.niltsiar.anothertodo.kotlin.library"
+            id = libs.plugins.convention.kotlin.library.get().pluginId
             implementationClass = "KotlinLibraryConventionPlugin"
         }
         register("kotlinSerialization") {
-            id = "dev.niltsiar.anothertodo.kotlin.serialization"
+            id = libs.plugins.convention.kotlin.serialization.get().pluginId
             implementationClass = "KotlinSerializationConventionPlugin"
         }
         register("androidHilt") {
-            id = "dev.niltsiar.anothertodo.android.hilt"
+            id = libs.plugins.convention.android.hilt.get().pluginId
             implementationClass = "AndroidHiltConventionPlugin"
         }
         register("androidRoom") {
-            id = "dev.niltsiar.anothertodo.android.room"
+            id = libs.plugins.convention.android.room.get().pluginId
             implementationClass = "AndroidRoomConventionPlugin"
         }
         register("jvmTest") {
-            id = "dev.niltsiar.anothertodo.jvm.test"
+            id = libs.plugins.convention.jvm.test.get().pluginId
             implementationClass = "JvmTestConventionPlugin"
         }
         register("arrow") {
-            id = "dev.niltsiar.anothertodo.arrow"
+            id = libs.plugins.convention.arrow.get().pluginId
             implementationClass = "ArrowConventionPlugin"
         }
         register("navigation") {
-            id = "dev.niltsiar.anothertodo.navigation"
+            id = libs.plugins.convention.navigation.get().pluginId
             implementationClass = "NavigationConventionPlugin"
         }
         register("kotlinxDateTime") {
-            id = "dev.niltsiar.anothertodo.kotlinx.datetime"
+            id = libs.plugins.convention.kotlinx.datetime.get().pluginId
             implementationClass = "KotlinxDateTimeConventionPlugin"
         }
     }

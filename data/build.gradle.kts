@@ -1,10 +1,10 @@
 plugins {
-    id("dev.niltsiar.anothertodo.android.library")
-    id("dev.niltsiar.anothertodo.android.hilt")
-    id("dev.niltsiar.anothertodo.android.room")
-    id("dev.niltsiar.anothertodo.kotlin.serialization")
-    id("dev.niltsiar.anothertodo.arrow")
-    id("dev.niltsiar.anothertodo.kotlinx.datetime")
+    alias(libs.plugins.convention.android.library)
+    alias(libs.plugins.convention.android.hilt)
+    alias(libs.plugins.convention.android.room)
+    alias(libs.plugins.convention.kotlin.serialization)
+    alias(libs.plugins.convention.arrow)
+    alias(libs.plugins.convention.kotlinx.datetime)
 }
 
 android {
