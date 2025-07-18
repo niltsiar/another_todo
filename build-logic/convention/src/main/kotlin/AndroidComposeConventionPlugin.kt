@@ -13,14 +13,14 @@ class AndroidComposeConventionPlugin : Plugin<Project> {
         with(target) {
             // Apply the Kotlin Compose plugin
             pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
-            
+
             // Configure Android
             extensions.findByType(CommonExtension::class.java)?.apply {
                 buildFeatures {
                     compose = true
                 }
             }
-            
+
             // Add Compose dependencies
             dependencies {
                 add("implementation", libs.findLibrary("androidx.activity.compose").get())
@@ -31,7 +31,8 @@ class AndroidComposeConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx.material3.window.size").get())
                 add("implementation", libs.findLibrary("androidx.foundation").get())
                 add("implementation", libs.findLibrary("kotlinx.collections.immutable").get())
-                
+                add("implementation", libs.findLibrary("androidx.lifecycle.runtime.compose").get())
+
                 add("debugImplementation", libs.findLibrary("androidx.ui.tooling").get())
                 add("debugImplementation", libs.findLibrary("androidx.ui.test.manifest").get())
             }
