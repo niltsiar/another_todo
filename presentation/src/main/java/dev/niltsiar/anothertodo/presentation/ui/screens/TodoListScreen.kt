@@ -39,13 +39,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.niltsiar.anothertodo.domain.model.Priority
 import dev.niltsiar.anothertodo.domain.model.TodoItem
 import dev.niltsiar.anothertodo.presentation.viewmodel.TodoViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Preview(showBackground = true)
 @Composable
 fun TodoListScreenPreview() {
     TodoListScreenContent(
         isLoading = false,
-        todos = listOf(
+        todos = persistentListOf(
             TodoItem(
                 id = 1,
                 title = "Sample Todo 1",
@@ -78,7 +81,7 @@ fun TodoListScreen(
 
     TodoListScreenContent(
         isLoading = uiState.isLoading,
-        todos = uiState.todos,
+        todos = uiState.todos.toImmutableList(),
         onAddTodo = onAddTodo,
         onTodoClick = onTodoClick,
         modifier = modifier
@@ -89,13 +92,11 @@ fun TodoListScreen(
 @Composable
 fun TodoListScreenContent(
     isLoading: Boolean,
-    todos: List<TodoItem>,
+    todos: ImmutableList<TodoItem>,
     onAddTodo: () -> Unit,
     onTodoClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -109,7 +110,7 @@ fun TodoListScreenContent(
         },
         modifier = modifier
     ) { innerPadding ->
-        if (uiState.isLoading) {
+        if (isLoading) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -118,7 +119,7 @@ fun TodoListScreenContent(
             ) {
                 CircularProgressIndicator()
             }
-        } else if (uiState.todos.isEmpty()) {
+        } else if (todos.isEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -133,7 +134,7 @@ fun TodoListScreenContent(
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-                items(uiState.todos) { todo ->
+                items(todos) { todo ->
                     TodoItem(
                         todo = todo,
                         onTodoClick = { onTodoClick(todo.id) }
@@ -162,7 +163,7 @@ fun TodoItemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun TodoItemPreview() {
+fun TodoItemWithThemePreview() {
     MaterialTheme {
         TodoItem(
             todo = TodoItem(
@@ -231,9 +232,9 @@ fun TodoItem(
 
 @Preview(showBackground = true)
 @Composable
-fun TodoListScreenPreview() {
+fun TodoListItemsPreview() {
     MaterialTheme {
-        val sampleTodos = listOf(
+        val sampleTodos = persistentListOf(
             TodoItem(
                 id = 1,
                 title = "Sample Todo 1",

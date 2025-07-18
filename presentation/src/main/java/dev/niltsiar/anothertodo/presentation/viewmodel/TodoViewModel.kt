@@ -12,6 +12,7 @@ import dev.niltsiar.anothertodo.domain.usecase.GetTodosUseCase
 import dev.niltsiar.anothertodo.domain.usecase.UpdateTodoUseCase
 import dev.niltsiar.anothertodo.presentation.model.TodoUiState
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,7 +39,7 @@ class TodoViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getTodosUseCase().collect { todos ->
-                _uiState.update { it.copy(todos = todos, isLoading = false) }
+                _uiState.update { it.copy(todos = todos.toImmutableList(), isLoading = false) }
             }
         }
     }
@@ -47,7 +48,7 @@ class TodoViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getTodosUseCase.getActiveTodos().collect { todos ->
-                _uiState.update { it.copy(todos = todos, isLoading = false) }
+                _uiState.update { it.copy(todos = todos.toImmutableList(), isLoading = false) }
             }
         }
     }
@@ -56,7 +57,7 @@ class TodoViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             getTodosUseCase.getCompletedTodos().collect { todos ->
-                _uiState.update { it.copy(todos = todos, isLoading = false) }
+                _uiState.update { it.copy(todos = todos.toImmutableList(), isLoading = false) }
             }
         }
     }

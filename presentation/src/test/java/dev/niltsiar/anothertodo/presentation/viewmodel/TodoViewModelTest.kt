@@ -13,6 +13,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -26,33 +27,33 @@ import arrow.core.left
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TodoViewModelTest {
-    
+
     private val testDispatcher = StandardTestDispatcher()
-    
+
     private lateinit var getTodosUseCase: GetTodosUseCase
     private lateinit var getTodoByIdUseCase: GetTodoByIdUseCase
     private lateinit var addTodoUseCase: AddTodoUseCase
     private lateinit var updateTodoUseCase: UpdateTodoUseCase
     private lateinit var deleteTodoUseCase: DeleteTodoUseCase
-    
+
     private lateinit var viewModel: TodoViewModel
-    
+
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        
+
         getTodosUseCase = mockk()
         getTodoByIdUseCase = mockk()
         addTodoUseCase = mockk()
         updateTodoUseCase = mockk()
         deleteTodoUseCase = mockk()
     }
-    
+
     @After
     fun tearDown() {
         Dispatchers.resetMain()
     }
-    
+
     @Test
     fun `loadTodos should update state with todos`() = runTest {
         // Given
@@ -61,7 +62,7 @@ class TodoViewModelTest {
             TodoItem(id = 2, title = "Test Todo 2")
         )
         coEvery { getTodosUseCase() } returns flowOf(todos)
-        
+
         viewModel = TodoViewModel(
             getTodosUseCase,
             getTodoByIdUseCase,
@@ -69,25 +70,25 @@ class TodoViewModelTest {
             updateTodoUseCase,
             deleteTodoUseCase
         )
-        
+
+        // Advance the dispatcher to allow the init block to execute
+        testDispatcher.scheduler.advanceUntilIdle()
+
         // When & Then
         viewModel.uiState.test {
-            val initialState = awaitItem()
-            initialState.isLoading shouldBe true
-            
-            val loadedState = awaitItem()
-            loadedState.isLoading shouldBe false
-            loadedState.todos shouldBe todos
+            val state = awaitItem()
+            state.isLoading shouldBe false
+            state.todos shouldBe todos.toImmutableList()
         }
     }
-    
+
     @Test
     fun `getTodoById should update state with selected todo`() = runTest {
         // Given
         val todo = TodoItem(id = 1, title = "Test Todo")
         coEvery { getTodosUseCase() } returns flowOf(emptyList())
         coEvery { getTodoByIdUseCase(1) } returns todo.right()
-        
+
         viewModel = TodoViewModel(
             getTodosUseCase,
             getTodoByIdUseCase,
@@ -95,24 +96,24 @@ class TodoViewModelTest {
             updateTodoUseCase,
             deleteTodoUseCase
         )
-        
+
         // When
         viewModel.getTodoById(1)
         testDispatcher.scheduler.advanceUntilIdle()
-        
+
         // Then
         viewModel.uiState.test {
             val state = awaitItem()
             state.selectedTodo shouldBe todo
         }
     }
-    
+
     @Test
     fun `getTodoById should update state with error when todo not found`() = runTest {
         // Given
         coEvery { getTodosUseCase() } returns flowOf(emptyList())
         coEvery { getTodoByIdUseCase(1) } returns TodoError.TodoNotFound.left()
-        
+
         viewModel = TodoViewModel(
             getTodosUseCase,
             getTodoByIdUseCase,
@@ -120,11 +121,11 @@ class TodoViewModelTest {
             updateTodoUseCase,
             deleteTodoUseCase
         )
-        
+
         // When
         viewModel.getTodoById(1)
         testDispatcher.scheduler.advanceUntilIdle()
-        
+
         // Then
         viewModel.uiState.test {
             val state = awaitItem()
